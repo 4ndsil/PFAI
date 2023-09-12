@@ -107,3 +107,7 @@ search cost:  15
 solution cost:  11
 cpu time:  0.0
 effective branching factor:  1.279137959512401
+
+-------------------------------------------------------------
+Compare the outcome of the different heuristics using greedy search
+save the statistics in your text document.

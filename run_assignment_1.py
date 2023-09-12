@@ -50,11 +50,17 @@ def main():
 
     ep = EightPuzzle(init_state_2, goal_state_2)
     sa_2 = SearchAlgorithm(ep)
-
+    '''
     print('Greedy search')
     print('starting search')
     ep.pretty_print()
-    goal_node = sa_2.greedy_search(heuristic=0, statistics=True)
+    goal_node = sa_2.greedy_search(heuristic=0, verbose=True, statistics=True)
+    '''
+
+    print('A* search')
+    print('starting search')
+    ep.pretty_print()
+    goal_node = sa_2.a_star(heuristic=0, verbose=True, statistics=True)
 
     '''
     list = [[7, 2, 4], [5, 'e', 6], [8, 3, 1]]

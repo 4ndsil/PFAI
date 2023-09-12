@@ -170,6 +170,41 @@ class SearchAlgorithm:
                     h = succ.state.h_1() if heuristic == 0 else succ.state.h_2()
                     frontier.put(PrioritizedItem(h, succ))
 
+    def a_star(self, heuristic=0, verbose=False, statistics=False):
+        self.search_cost = 0
+        self.start.depth = 0
+        start_time = time.process_time()
+        frontier = queue.PriorityQueue()
+        h = self.start.state.h_1() if heuristic == 0 else self.start.state.h_2()
+        start_cost = self.start.cost + h
+        frontier.put(PrioritizedItem(start_cost, self.start))
+        visited_states = [self.start.state.state]
+        self.search_cost += 1
+        stop = False
+        while not stop:
+            if frontier.empty():
+                return None
+            curr_node = frontier.get()
+            if curr_node.item.goal_state():
+                stop = True
+                curr_node.item.pretty_print_solution(verbose)
+                if statistics:
+                    self.goal_depth = curr_node.item.depth
+                    self.solution_cost = curr_node.item.depth  # fråga på handledning
+                    self.cpu_time = time.process_time() - start_time
+                    self.statistics()
+                return curr_node.item
+            successors = curr_node.item.successor()
+            while not successors.empty():
+                succ = successors.get()
+                if succ.state.state not in visited_states:
+                    self.search_cost += 1
+                    visited_states.append(succ.state.state)
+                    h = succ.state.h_1() if heuristic == 0 else succ.state.h_2()
+                    estimated_cost = succ.cost + h
+                    print(succ.cost)
+                    frontier.put(PrioritizedItem(estimated_cost, succ))
+
     def statistics(self):
         branching = self.search_cost ** (1 / self.goal_depth)
         print("depth: ", self.goal_depth)

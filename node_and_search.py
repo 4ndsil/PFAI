@@ -90,7 +90,7 @@ class SearchAlgorithm:
             successors = curr_node.successor()
             while not successors.empty():
                 succ = successors.get()
-                # if succ.state.state not in visited_states:
+            if succ.state.state not in visited_states:
                 self.search_cost += 1
                 succ.visited = True
                 frontier.put(succ)
@@ -202,7 +202,6 @@ class SearchAlgorithm:
                     visited_states.append(succ.state.state)
                     h = succ.state.h_1() if heuristic == 0 else succ.state.h_2()
                     estimated_cost = succ.cost + h
-                    print(succ.cost)
                     frontier.put(PrioritizedItem(estimated_cost, succ))
 
     def statistics(self):

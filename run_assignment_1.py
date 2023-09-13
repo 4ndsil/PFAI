@@ -19,7 +19,6 @@ def main():
     mc = MissionariesAndCannibals(init_state, goal_state)
     sa = SearchAlgorithm(mc)
 
-    '''
     print('BFS')
     print('Start state: ')
     mc.pretty_print()
@@ -28,7 +27,6 @@ def main():
     goal_node.state.pretty_print()
     goal_node.pretty_print_solution()
     sa.statistics()
-    '''
 
     '''
     print('DFS')
@@ -47,19 +45,26 @@ def main():
     print('goal state: ')
     goal_node.state.pretty_print()
     '''
-
+    '''
     ep = EightPuzzle(init_state_2, goal_state_2)
     sa_2 = SearchAlgorithm(ep)
-
+    
     print('Greedy search')
     print('starting search')
     ep.pretty_print()
-    goal_node = sa_2.greedy_search(heuristic=0, statistics=True)
-
+    goal_node = sa_2.greedy_search(heuristic=1, verbose=True, statistics=True)
     '''
-    list = [[7, 2, 4], [5, 'e', 6], [8, 3, 1]]
-
-    print(list[1][1+1])
+    '''
+    print('A* search')
+    print('starting search')
+    ep.pretty_print()
+    goal_node = sa_2.a_star(heuristic=1, verbose=True, statistics=True)
+    '''
+    '''
+    # uninformed search for eight puzzle
+    print('BFS')
+    goal_node = sa_2.ids(statistics=True)
+    goal_node.pretty_print_solution()
     '''
 
 

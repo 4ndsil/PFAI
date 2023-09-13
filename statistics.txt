@@ -1,3 +1,12 @@
+Group:
+Andreas Siljefors
+Jesper Blomqvist
+Tarkan Cakici
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Missionaries and cannibal problem
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 Compare both DFS and BFS (use the statistics function), save the results in a text document:
 
 BFS
@@ -13,6 +22,7 @@ action: c
 action: cc
 action: m
 action: mc
+
 depth:  11
 search cost:  2750
 solution cost:  11
@@ -38,7 +48,7 @@ search cost:  15
 solution cost:  11
 cpu time:  0.0
 effective branching factor:  1.279137959512401
--------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 If you remove the check for already visited states in DFS and run the problem, what happen then (use the statistics function)? Save your results in the text document.
 
 BFS
@@ -64,10 +74,34 @@ DFS
 
 The DFS algorithm gets stuck in a infiniate loop.
 
--------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 Compare BFS with and without already visited states check. Write the statistics in the text document.
 
-BFS
+
+
+BFS with node visited check
+
+action: None
+action: mc
+action: m
+action: cc
+action: c
+action: mm
+action: mc
+action: mm
+action: c
+action: cc
+action: m
+action: mc
+
+depth:  11
+search cost:  2750
+solution cost:  11
+cpu time:  0.09375
+effective branching factor:  2.054312972045487
+
+BFS without node visited check
+
 action: None
 action: mc
 action: m
@@ -85,7 +119,7 @@ search cost:  24279
 solution cost:  11
 cpu time:  0.875
 effective branching factor:  2.504132732032241
--------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 Run the IDS algorithm and get the statistics from it, add the results to
 your text document.
 
@@ -108,6 +142,46 @@ solution cost:  11
 cpu time:  0.0
 effective branching factor:  1.279137959512401
 
--------------------------------------------------------------
-Compare the outcome of the different heuristics using greedy search
-save the statistics in your text document.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Eight puzzle problem
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Compare the outcome of the different heuristics using greedy search save the statistics in your text document.
+
+Greedy search with out of tiles heuristics (h1)
+
+depth:  58
+search cost:  671
+solution cost:  58
+cpu time:  0.109375
+effective branching factor:  1.1187591367869654
+
+Greedy search with manhattan distance heuristics (h2)
+
+depth:  66
+search cost:  406
+solution cost:  66
+cpu time:  0.078125
+effective branching factor:  1.0952748659524134
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Compare the outcome of the different heuristics using A* (a_star) save the statistics in your text document.
+
+A* search with out of tiles heuristics (h1)
+
+depth:  26
+search cost:  49438
+solution cost:  26
+cpu time:  40.875
+effective branching factor:  1.5154471789158814
+
+A* search with manhattan distance heuristics (h2)
+
+depth:  26
+search cost:  4689
+solution cost:  26
+cpu time:  0.59375
+effective branching factor:  1.3841889998075505
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Try the uninformed search methods on the eight_puzzle problem, save their performance measure (statistics) in your text document. Note, if they fail to
+find a solution within 5 minutes, abort the experiment, and assign it time_out in your text document.

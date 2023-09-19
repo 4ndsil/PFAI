@@ -64,6 +64,12 @@ def main():
     '''
     # uninformed search for eight puzzle
     print('BFS')
+    goal_node = sa_2.bfs(statistics=True)
+    goal_node.pretty_print_solution()
+    print('DFS')
+    goal_node = sa_2.dfs(statistics=True)
+    goal_node.pretty_print_solution()
+    print('IDS')
     goal_node = sa_2.ids(statistics=True)
     goal_node.pretty_print_solution()
     '''

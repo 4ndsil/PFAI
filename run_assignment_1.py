@@ -16,6 +16,7 @@ goal_state_2 = [['e', 1, 2], [3, 4, 5], [6, 7, 8]]
 
 
 def main():
+<<<<<<< Updated upstream
     mc = MissionariesAndCannibals(init_state, goal_state)
     sa = SearchAlgorithm(mc)
 
@@ -66,6 +67,22 @@ def main():
     goal_node = sa_2.ids(statistics=True)
     goal_node.pretty_print_solution()
     '''
+=======
+    #mc = MissionariesAndCannibals(init_state, goal_state)
+    #sa = SearchAlgorithm(mc)
+
+    ep = EightPuzzle(init_state_2, goal_state_2)
+    sa_2 = SearchAlgorithm(ep)
+
+    print('BFS')
+    print('Start state: ')
+    ep.pretty_print()
+    goal_node = sa_2.ids(statistics=True, cutoff=1)
+    print('goal state: ')
+    goal_node.state.pretty_print()
+    goal_node.pretty_print_solution()
+    sa_2.statistics()
+>>>>>>> Stashed changes
 
 
 if __name__ == "__main__":

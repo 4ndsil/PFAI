@@ -202,6 +202,10 @@ class SearchAlgorithm:
                     visited_states.append(succ.state.state)
                     h = succ.state.h_1() if heuristic == 0 else succ.state.h_2()
                     estimated_cost = succ.cost + h
+<<<<<<< Updated upstream
+=======
+                    print(succ.cost)
+>>>>>>> Stashed changes
                     frontier.put(PrioritizedItem(estimated_cost, succ))
 
     def statistics(self):

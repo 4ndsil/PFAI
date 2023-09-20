@@ -25,6 +25,13 @@ class FourInARow:
         
     #actions
     #TODO
+    def actions(self):   
+        legal_actions = []
+        for col in range(7):
+            if len(self.board[col]) < 6: 
+                legal_actions.append(col)
+        return legal_actions
+    
 
     def result(self, action):                    
         dc = deepcopy(self)

@@ -25,6 +25,9 @@ def ask_ai(state0):
             print('Human won')
         return state1, True
     return state1, False 
+
+def ask_player (state1): 
+    return None
  
 def main():
     print('Welcome to play for-in-a-row!')

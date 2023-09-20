@@ -65,22 +65,24 @@ class FourInARow:
                         return True, -100  # MIN player wins negative uti
 
         # check horizontal
+        print("Kodraden ovanför check horz")
         for r in range(0, len(self.board)-1):
             count = 0
             curr_chip = None
             for c in range(0, len(self.board)):
-                if curr_chip == self.board[r][c]:
-                    count = count + 1
-                else:
-                    curr_chip = self.board[r][c]
-                    count = 1
-                if count == 4:
-                    if self.ai_player == curr_chip:
-                        # print('Found horizontal win')
-                        return True, 100  # MAX ai wins positive utility
+                if len(self.board[c]) > r:
+                    if curr_chip == self.board[c][r]:
+                        count = count + 1
                     else:
-                        # print('Found horizontal loss')
-                        return True, -100  # MIN player wins negative utility
+                        curr_chip = self.board[c][r]
+                        count = 1
+                    if count == 4:
+                        if self.ai_player == curr_chip:
+                            # print('Found horizontal win')
+                            return True, 100  # MAX ai wins positive utility
+                        else:
+                            # print('Found horizontal loss')
+                            return True, -100  # MIN player wins negative utility
 
         # check positive diagonal
         for c in range(7-3):
@@ -111,7 +113,37 @@ class FourInARow:
                     return False, 0
         return True
 
+    def pretty_print_orig(self):
+        for r in range(0, len(self.board)-1):  # Rad
+            row_str = ""
+            for c in range(0, len(self.board)):  # Kolumn
+                if len(self.board[c]) > r:
+                    row_str += self.board[c][r] + " "
+                else:
+                    row_str += "- "
+            print(row_str)
+
+    def pretty_print1(self):
+        for c in range(0, len(self.board)):  # Rad
+            row_str = ""
+            for r in range(len(self.board)-1, 0):  # Kolumn
+                if len(self.board[c]) > r:
+                    row_str += self.board[c][r] + " "
+                else:
+                    row_str += "- "
+            print(row_str)
+
     def pretty_print(self):
-        for c in range(0, len(self.board)):
-            for r in range(0, len(self.board[c])):
-                print(self.board[c][r])
+        list_row = []
+        for r in range(0, len(self.board)-1):  # Rad
+            row_str = ""
+            for c in range(0, len(self.board)):  # Kolumn
+                if len(self.board[c]) > r:
+                    row_str += self.board[c][r] + " "
+                else:
+                    row_str += "_ "
+
+            list_row.append(row_str)
+
+        for i in list_row[::-1]:
+            print(i)

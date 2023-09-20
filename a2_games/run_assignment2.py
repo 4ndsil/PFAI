@@ -29,8 +29,12 @@ def ask_ai(state0):
 
 def ask_player(state0):
     moves = state0.actions()
-    action_str = input(moves)
-    action = int(action_str)
+    legal = False
+    while legal == False:
+        action_str = input('Available moves: [moves]')
+        action = int(action_str)
+        if action in moves:
+            legal = True
     state1 = state0.result(action)
     print('--------')
     print('Human moves')

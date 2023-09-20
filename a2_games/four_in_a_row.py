@@ -27,9 +27,9 @@ class FourInARow:
     # actions
     def actions(self):
         legal_actions = []
-        for col in range(7):
-            if len(self.board[col]) < 6:
-                legal_actions.append(col)
+        for c in range(7):
+            if len(self.board[c]) < 6:
+                legal_actions.append(c)
         return legal_actions
 
     def result(self, action):
@@ -65,16 +65,18 @@ class FourInARow:
                         return True, -100  # MIN player wins negative uti
 
         # check horizontal
-        print("Kodraden ovanför check horz")
         for r in range(0, len(self.board)-1):
             count = 0
             curr_chip = None
+            curr_col = None
             for c in range(0, len(self.board)):
                 if len(self.board[c]) > r:
-                    if curr_chip == self.board[c][r]:
-                        count = count + 1
+                    if curr_chip == self.board[c][r] and curr_col+1 == c:
+                        count += + 1
+                        curr_col += 1
                     else:
                         curr_chip = self.board[c][r]
+                        curr_col = c
                         count = 1
                     if count == 4:
                         if self.ai_player == curr_chip:
@@ -96,22 +98,21 @@ class FourInARow:
                         return True, -100
 
         # check negative diagonal
-        for c in range(7-3):
-            for r in range(6-3):
-                if len(self.board[c]) > r and len(self.board[c-1]) > r+1 and len(self.board[c-2]) > r+2 and len(self.board[c-3]) > r+3:
-                    if self.ai_player == self.board[c][r] and self.ai_player == self.board[c-1][r+1] and self.ai_player == self.board[c-2][r+2] and self.ai_player == self.board[c-3][r+3]:
+        for c in range(4):
+            for r in range(3, 6):
+                if len(self.board[c]) > r and len(self.board[c+1]) > r-1 and len(self.board[c+2]) > r-2 and len(self.board[c+3]) > r-3:
+                    if self.ai_player == self.board[c][r] and self.ai_player == self.board[c+1][r-1] and self.ai_player == self.board[c+2][r-2] and self.ai_player == self.board[c+3][r-3]:
                         # print('Found negative diagonal win')
                         return True, 100
-                    elif self.ai_player != self.board[c][r] and self.ai_player != self.board[c-1][r+1] and self.ai_player != self.board[c-2][r+2] and self.ai_player != self.board[c-3][r+3]:
+                    elif self.ai_player != self.board[c][r] and self.ai_player != self.board[c+1][r-1] and self.ai_player != self.board[c+2][r-2] and self.ai_player != self.board[c+3][r-3]:
                         # print('Found negative diagonal loss')
                         return True, -100
 
         # check draw
         for c in range(0, len(self.board)):
-            for r in range(0, len(self.board[c])):
-                if self.board[c][r]:
-                    return False, 0
-        return True
+            if len(self.board[c]) < 6:
+                return False, 0
+        return True, 0
 
     def pretty_print_orig(self):
         for r in range(0, len(self.board)-1):  # Rad

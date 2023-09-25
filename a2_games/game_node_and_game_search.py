@@ -42,37 +42,45 @@ class GameSearch:
         move = self.actions(tree)
         return move
 
-    def minimax_search(self):
+    def minimax_search(self, alpha=None, beta=None):
         start_time = process_time()
-        _, move = self.max_value(self.state, self.depth)
+        _, move = self.max_value(self.state, self.depth, alpha, beta)
         return move
 
-    def max_value(self, state, depth):
+    def max_value(self, state, depth, alpha=None, beta=None):
         move = None
         terminal, value = state.is_terminal()
         if terminal or depth == 0:
-            return value, None
+            return state.eval(), None
         v = -100000
         actions = state.actions()
         for action in actions:
             new_state = state.result(action)
-            v2, _ = self.min_value(new_state, depth - 1)
+            v2, _ = self.min_value(new_state, depth - 1, alpha, beta)
             if v2 > v:
                 v = v2
                 move = action
+            if beta != None and alpha != None:
+                alpha = max(alpha, v)
+                if v >= beta:
+                    return v, move
         return v, move
 
-    def min_value(self, state, depth):
+    def min_value(self, state, depth, alpha=None, beta=None):
         move = None
         terminal, value = state.is_terminal()
         if terminal or depth == 0:
-            return value, None
+            return state.eval(), None
         v = 100000
         actions = state.actions()
         for action in actions:
             new_state = state.result(action)
-            v2, _ = self.max_value(new_state, depth - 1)
+            v2, _ = self.max_value(new_state, depth - 1, alpha, beta)
             if v2 < v:
                 v = v2
                 move = action
+            if beta != None and alpha != None:
+                beta = min(beta, v)
+                if v <= alpha:
+                    return v, move
         return v, move

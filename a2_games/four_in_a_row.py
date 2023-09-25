@@ -42,8 +42,24 @@ class FourInARow:
             dc.board[action].append(self.to_move())
         return dc
 
-    # eval
-    # TODO
+    def eval(self):
+
+        h_value = 0
+
+        matrix = [[0, 1, 2, 2, 1, 0],
+                  [1, 2, 3, 3, 2, 1],
+                  [2, 3, 4, 4, 3, 2],
+                  [3, 4, 5, 5, 4, 3],
+                  [2, 3, 4, 4, 3, 2],
+                  [1, 2, 3, 3, 2, 1],
+                  [0, 1, 2, 2, 1, 0]]
+
+        for c in range(7):
+            for r in range(len(self.board[c])):
+                if self.board[c][r] == self.ai_player:
+                    h_value += matrix[c][r]
+
+        return h_value
 
     def is_terminal(self):
         # check vertical

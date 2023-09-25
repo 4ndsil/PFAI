@@ -1,2 +1,0 @@
-# PFAI
-### Python assignments

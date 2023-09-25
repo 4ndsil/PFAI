@@ -130,26 +130,6 @@ class FourInARow:
                 return False, 0
         return True, 0
 
-    def pretty_print_orig(self):
-        for r in range(0, len(self.board)-1):  # Rad
-            row_str = ""
-            for c in range(0, len(self.board)):  # Kolumn
-                if len(self.board[c]) > r:
-                    row_str += self.board[c][r] + " "
-                else:
-                    row_str += "- "
-            print(row_str)
-
-    def pretty_print1(self):
-        for c in range(0, len(self.board)):  # Rad
-            row_str = ""
-            for r in range(len(self.board)-1, 0):  # Kolumn
-                if len(self.board[c]) > r:
-                    row_str += self.board[c][r] + " "
-                else:
-                    row_str += "- "
-            print(row_str)
-
     def pretty_print(self):
         list_row = []
         for r in range(0, len(self.board)-1):  # Rad

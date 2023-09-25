@@ -16,6 +16,15 @@ class GameNode:
 
     def __init__(self, state, node=None):
         self.state = state
+        self.successors = []
+        self.parent
+        self.wins = 0
+        self.move
+        self.actions_left = state.actions()
+        self.playouts
+
+    def ucb1(self, c):  # c is preferably math.sqrt(2)
+        return (self.wins/self.playouts) + (c * math.sqrt(math.log(self.parent)/self.playouts))
 
 
 class GameSearch:
@@ -42,15 +51,37 @@ class GameSearch:
         move = self.actions(tree)
         return move
 
-    def minimax_search(self, alpha=None, beta=None):
-        start_time = process_time()
-        _, move = self.max_value(self.state, self.depth, alpha, beta)
+    def select(self, node):
+        if node.actions_left:
+            return node
+        max_ucb1 = 0
+        for succ in node.successors:
+            curr_ucb1 = succ.ucb1()
+            if curr_ucb1 > max_ucb1:
+                max_ucb1 = curr_ucb1
+                break
+        return self.select(self, succ)
+
+    def expand(self, node):
+        if not node.action_left:
+            return node
+
+    def minimax_search(self, alpha=None, beta=None, time_limit=None):
+        start = process_time()
+        stop = start + time_limit
+        _, move = self.max_value(
+            self.state, self.depth, alpha, beta, start, stop)
         return move
 
-    def max_value(self, state, depth, alpha=None, beta=None):
+    def max_value(self, state, depth, alpha=None, beta=None, start=None, stop=None):
         move = None
         terminal, value = state.is_terminal()
-        if terminal or depth == 0:
+        if terminal:
+            return state.eval(), None
+        if start != None and start >= stop:
+            print('stop')
+            return state.eval(), None
+        if depth == 0:
             return state.eval(), None
         v = -100000
         actions = state.actions()
@@ -66,10 +97,14 @@ class GameSearch:
                     return v, move
         return v, move
 
-    def min_value(self, state, depth, alpha=None, beta=None):
+    def min_value(self, state, depth, alpha=None, beta=None, start=None, stop=None):
         move = None
         terminal, value = state.is_terminal()
-        if terminal or depth == 0:
+        if terminal:
+            return state.eval(), None
+        if start != None and start >= stop:
+            return state.eval(), None
+        if depth == 0:
             return state.eval(), None
         v = 100000
         actions = state.actions()

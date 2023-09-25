@@ -9,7 +9,7 @@ from game_node_and_game_search import GameSearch
 
 def ask_ai(state0):
     gs = GameSearch(state0, depth=3)
-    move = gs.minimax_search(alpha=-100000, beta=100000)
+    move = gs.minimax_search(time_limit=1)
     # gs = GameSearch(state0, depth=3, time=20)
     # move = gs.mcts()
     state1 = state0.result(move)
@@ -31,7 +31,8 @@ def ask_player(state0):
     moves = state0.actions()
     legal = False
     while legal == False:
-        action_str = input('Available moves: [moves]')
+        print('Available moves: ', moves)
+        action_str = input('Your move: ')
         action = int(action_str)
         if action in moves:
             legal = True

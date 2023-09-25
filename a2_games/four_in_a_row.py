@@ -5,6 +5,7 @@ Author: Tony Lindgren
 '''
 from copy import deepcopy
 
+
 class FourInARow:
     def __init__(self, player, chip):
         new_board = []
@@ -19,35 +20,33 @@ class FourInARow:
         else:
             self.ai_player = 'w'
         self.curr_move = chip
-    
+
     def to_move(self):
         return self.curr_move
-        
-    #actions
-    #TODO
-    def actions(self):   
+
+    # actions
+    def actions(self):
         legal_actions = []
         for col in range(7):
-            if len(self.board[col]) < 6: 
+            if len(self.board[col]) < 6:
                 legal_actions.append(col)
         return legal_actions
-    
 
-    def result(self, action):                    
+    def result(self, action):
         dc = deepcopy(self)
         if self.to_move() == 'w':
             dc.curr_move = 'r'
-            dc.board[action].append(self.to_move())   
+            dc.board[action].append(self.to_move())
         else:
             dc.curr_move = 'w'
-            dc.board[action].append(self.to_move())            
+            dc.board[action].append(self.to_move())
         return dc
-        
-    #eval
-    #TODO
-        
+
+    # eval
+    # TODO
+
     def is_terminal(self):
-        #check vertical
+        # check vertical
         for c in range(0, len(self.board)):
             count = 0
             curr_chip = None
@@ -55,37 +54,94 @@ class FourInARow:
                 if curr_chip == self.board[c][r]:
                     count = count + 1
                 else:
-                    curr_chip = self.board[c][r]     
+                    curr_chip = self.board[c][r]
                     count = 1
                 if count == 4:
-                    if self.ai_player == curr_chip:        
-                        #print('Found vertical win')
-                        return True, 100          #MAX ai wins positive utility
+                    if self.ai_player == curr_chip:
+                        # print('Found vertical win')
+                        return True, 100  # MAX ai wins positive utility
                     else:
-                        #print('Found vertical loss')
-                        return True, -100         #MIN player wins negative utility
-                    
-        #check horizontal 
-        #TODO   
-                    
-        #check positive diagonal
-        for c in range(7-3): 
-            for r in range(6-3):    
+                        # print('Found vertical loss')
+                        return True, -100  # MIN player wins negative uti
+
+        # check horizontal
+        print("Kodraden ovanför check horz")
+        for r in range(0, len(self.board)-1):
+            count = 0
+            curr_chip = None
+            for c in range(0, len(self.board)):
+                if len(self.board[c]) > r:
+                    if curr_chip == self.board[c][r]:
+                        count += 1
+                    else:
+                        curr_chip = self.board[c][r]
+                        count = 1
+                    if count == 4:
+                        if self.ai_player == curr_chip:
+                            return True, 100  # MAX ai wins positive utility
+                        else:
+                            return True, -100  # MIN player wins negative utility
+
+        # check positive diagonal
+        for c in range(7-3):
+            for r in range(6-3):
                 if len(self.board[c]) > r and len(self.board[c+1]) > r+1 and len(self.board[c+2]) > r+2 and len(self.board[c+3]) > r+3:
-                    if self.ai_player == self.board[c][r] and self.ai_player == self.board[c+1][r+1] and self.ai_player == self.board[c+2][r+2] and self.ai_player == self.board[c+3][r+3]:  
-                        #print('Found positive diagonal win')
+                    if self.ai_player == self.board[c][r] and self.ai_player == self.board[c+1][r+1] and self.ai_player == self.board[c+2][r+2] and self.ai_player == self.board[c+3][r+3]:
+                        # print('Found positive diagonal win')
                         return True, 100
-                    elif self.ai_player != self.board[c][r] and self.ai_player != self.board[c+1][r+1] and self.ai_player != self.board[c+2][r+2] and self.ai_player != self.board[c+3][r+3]:  
-                        #print('Found positive diagonal loss')
+                    elif self.ai_player != self.board[c][r] and self.ai_player != self.board[c+1][r+1] and self.ai_player != self.board[c+2][r+2] and self.ai_player != self.board[c+3][r+3]:
+                        # print('Found positive diagonal loss')
                         return True, -100
-        
-        #check negative diagonal 
-        #TODO   
-             
-        #check draw
-        #TODO  
-         
-        return False, 0                                            
-                
-    #pretty_print
-    #TODO
+
+        # check negative diagonal
+        for c in range(7-3):
+            for r in range(6-3):
+                if len(self.board[c]) > r and len(self.board[c-1]) > r+1 and len(self.board[c-2]) > r+2 and len(self.board[c-3]) > r+3:
+                    if self.ai_player == self.board[c][r] and self.ai_player == self.board[c-1][r+1] and self.ai_player == self.board[c-2][r+2] and self.ai_player == self.board[c-3][r+3]:
+                        # print('Found negative diagonal win')
+                        return True, 100
+                    elif self.ai_player != self.board[c][r] and self.ai_player != self.board[c-1][r+1] and self.ai_player != self.board[c-2][r+2] and self.ai_player != self.board[c-3][r+3]:
+                        # print('Found negative diagonal loss')
+                        return True, -100
+
+        # check draw
+        for c in range(0, len(self.board)):
+            for r in range(0, len(self.board[c])):
+                if self.board[c][r]:
+                    return False, 0
+        return True
+
+    def pretty_print_orig(self):
+        for r in range(0, len(self.board)-1):  # Rad
+            row_str = ""
+            for c in range(0, len(self.board)):  # Kolumn
+                if len(self.board[c]) > r:
+                    row_str += self.board[c][r] + " "
+                else:
+                    row_str += "- "
+            print(row_str)
+
+    def pretty_print1(self):
+        for c in range(0, len(self.board)):  # Rad
+            row_str = ""
+            for r in range(len(self.board)-1, 0):  # Kolumn
+                if len(self.board[c]) > r:
+                    row_str += self.board[c][r] + " "
+                else:
+                    row_str += "- "
+            print(row_str)
+
+    def pretty_print(self):
+        list_row = []
+        for r in range(0, len(self.board)-1):  # Rad
+            row_str = ""
+            for c in range(0, len(self.board)):  # Kolumn
+                if len(self.board[c]) > r:
+                    row_str += self.board[c][r] + " "
+                else:
+                    row_str += "_ "
+                    
+            list_row.append(row_str)
+            
+        for i in list_row[::-1]:
+            print(i)

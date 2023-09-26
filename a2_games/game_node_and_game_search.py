@@ -14,17 +14,17 @@ class GameNode:
     state
     '''
 
-    def __init__(self, state, node=None):
+    def __init__(self, state, parent=None, move=None):
         self.state = state
         self.successors = []
-        self.parent
+        self.parent = parent
         self.wins = 0
-        self.move
+        self.move = move
         self.actions_left = state.actions()
-        self.playouts
+        self.playouts = 0
 
     def ucb1(self, c):  # c is preferably math.sqrt(2)
-        return (self.wins/self.playouts) + (c * math.sqrt(math.log(self.parent)/self.playouts))
+        return (self.wins/self.playouts) + (c * math.sqrt(math.log(self.parent.playouts)/self.playouts))
 
 
 class GameSearch:
@@ -32,9 +32,10 @@ class GameSearch:
     Class containing different game search algorithms, call it with a defined game/node
     '''
 
-    def __init__(self, game, depth=3):
+    def __init__(self, game, depth=3, time_limit=None):
         self.state = game
         self.depth = depth
+        self.time = time_limit
 
     def mcts(self):
         start_time = process_time()
@@ -51,20 +52,67 @@ class GameSearch:
         move = self.actions(tree)
         return move
 
-    def select(self, node):
+    def select(self, node):    # stopping condition is if the current node has actions left,
         if node.actions_left:
             return node
         max_ucb1 = 0
+        max_node = None
         for succ in node.successors:
-            curr_ucb1 = succ.ucb1()
+            curr_ucb1 = succ.ucb1(math.sqrt(2))
             if curr_ucb1 > max_ucb1:
                 max_ucb1 = curr_ucb1
-                break
-        return self.select(self, succ)
+                max_node = succ
+        return self.select(max_node)
 
-    def expand(self, node):
-        if not node.action_left:
+    def expand(self, node):  # remember to check if terminal node is reached
+        if not node.actions_left:
             return node
+        # if node.playouts != 0:
+
+        move = node.actions_left.pop()
+        new_state = node.state.result(move)
+        child = GameNode(new_state, node, move)
+        node.successors.append(child)
+        return child
+        # else:
+        #    return node
+
+    def simulate(self, node):  # remember to check if terminal node is reached
+
+        curr_node = node
+
+        while True:
+            terminal, value = curr_node.state.is_terminal()
+            if terminal:
+                return value
+            rand_move = random.choice(curr_node.actions_left)
+            new_state = curr_node.state.result(rand_move)
+            curr_node = GameNode(new_state, curr_node, rand_move)
+
+    def back_propagate(self, result, node):
+        curr_node = node
+        while curr_node.parent:
+            curr_node.playouts += 1
+            if result == 100:
+                curr_node.wins += 1
+            curr_node = curr_node.parent
+        curr_node.playouts += 1
+        if result == 100:
+            curr_node.wins += 1
+
+    def actions(self, node):
+        if not node.actions_left:
+            return None
+        best_value = 0
+        best_move = None
+        for move in node.actions_left:
+            for succ in node.successors:
+                if succ.move == move:
+                    curr_value = (succ.wins/succ.playouts)
+                if curr_value > best_value:
+                    best_value = curr_value
+                    best_move = move
+        return best_move
 
     def minimax_search(self, alpha=None, beta=None, time_limit=None):
         start = process_time()
@@ -79,7 +127,6 @@ class GameSearch:
         if terminal:
             return state.eval(), None
         if start != None and start >= stop:
-            print('stop')
             return state.eval(), None
         if depth == 0:
             return state.eval(), None

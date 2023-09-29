@@ -11,7 +11,8 @@ zebra:-
         House_colors = [Red, Green, White, Yellow, Blue],
         domain(House_colors, 1, 5), 
 
-        %TODO Nationalities = [English, Swede, Dane, Norwegian, German], 
+        %TODO 
+        Nationalities = [English, Swede, Dane, Norwegian, German], 
         domain(Nationalities, 1, 5),
 
         Pets = [Dog, Cats, Birds, Horse, Zebra],

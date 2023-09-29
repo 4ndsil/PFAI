@@ -1,4 +1,42 @@
 Andreas Siljefors
 Jesper Blomqvist
 Tarkan Cakici
+----------------------------------------------------------------------------------------------------------------
 
+Part A
+
+1. Write down the result of your subjective comparison between minimax
+and minimax with alfa-beta pruning. Note, if you have time, you can
+actually play the two versions against each other, for a better
+comparison.
+
+It was hard to notice any real difference in performance between the regular minmax and minmax with alpha-beta pruning. However, it should perhaps be able to
+compute faster since it dosen't have to evaluate every possible action there is. 
+
+2. Write down your thoughts after playing against the AI with the eval function
+
+The eval function improves the AI agent drastically and it always makes its inital moves on the middle of the board, as can be expected from the heuristics 
+we've implemented. 
+
+3. Write down your thoughts after playing against the MCTS AI.
+
+Compared to the minmax algortihm the MCTS AI seems to be the better player. However,
+it is hard to subjectively measure the effectivness of the different methods. 
+As mentioned in the instructions, perhaps a more consistent approach would be to let the versions play eachother 
+run a number of interations and statistically calculate the effectiveness based on win:loss ratios from a baseline of say, minimax.
+----------------------------------------------------------------------------------------------------------------
+
+Part B
+
+Please note, the full answer of who is living where, what they
+smoke, drink and their pets in your text document.
+
+| ?- zebra.
+house 1        house 2        house 3        house 4        house 5
+1-yellow       2-blue         3-red          4-green        5-white
+1-norwegian    2-dane         3-english      4-german       5-swede
+1-cats         2-horse        3-birds        4-zebra        5-dog
+1-dunhill      2-blend        3-pallmall     4-prince       5-bluemaster
+1-water        2-tea          3-milk         4-coffee       5-beer
+true ? 
+yes

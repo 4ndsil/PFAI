@@ -67,20 +67,14 @@ class GameSearch:
     def expand(self, node):  # remember to check if terminal node is reached
         if not node.actions_left:
             return node
-        # if node.playouts != 0:
-
         move = node.actions_left.pop()
         new_state = node.state.result(move)
         child = GameNode(new_state, node, move)
         node.successors.append(child)
         return child
-        # else:
-        #    return node
 
     def simulate(self, node):  # remember to check if terminal node is reached
-
         curr_node = node
-
         while True:
             terminal, value = curr_node.state.is_terminal()
             if terminal:
@@ -101,22 +95,24 @@ class GameSearch:
             curr_node.wins += 1
 
     def actions(self, node):
-        if not node.actions_left:
+        if not node.successors:
             return None
         best_value = 0
         best_move = None
-        for move in node.actions_left:
+        for move in node.state.actions():
             for succ in node.successors:
                 if succ.move == move:
                     curr_value = (succ.wins/succ.playouts)
-                if curr_value > best_value:
-                    best_value = curr_value
-                    best_move = move
+                    if curr_value > best_value:
+                        best_value = curr_value
+                        best_move = move
         return best_move
 
     def minimax_search(self, alpha=None, beta=None, time_limit=None):
         start = process_time()
-        stop = start + time_limit
+        stop = None
+        if time_limit != None:
+            stop = start + time_limit
         _, move = self.max_value(
             self.state, self.depth, alpha, beta, start, stop)
         return move
@@ -126,7 +122,7 @@ class GameSearch:
         terminal, value = state.is_terminal()
         if terminal:
             return state.eval(), None
-        if start != None and start >= stop:
+        if stop != None and start >= stop:
             return state.eval(), None
         if depth == 0:
             return state.eval(), None

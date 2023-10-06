@@ -1,0 +1,83 @@
+Andreas Siljefors
+Jesper Blomqvist
+Tarkan Cakici
+----------------------------------------------------------------------------------------------------------------
+
+1.
+Yes, both Harry Potter and Draco Malfoy has 15"_elder_thestral_hair.
+?- bagof(X, wand(X,Y), L).
+Y = '10"_blackthorn_unknown',
+L = [harry_potter] ? ;
+Y = '10"_hawthorn_unicorn',
+L = [harry_potter] ? ;
+Y = '10"_hawthorn_unicorn_hair',
+L = [draco_malfoy] ? ;
+Y = '11"_holly_phoenix',
+L = [harry_potter] ? ;
+Y = '11"_vine_dragon',
+L = [harry_potter] ? ;
+Y = '11"_vine_dragon_heartstring',
+L = [hermione_granger] ? ;
+Y = '12"_ash_unicorn_hair',
+L = [cedric_diggory] ? ;
+Y = '13"_walnut_dragon_heartstring',
+L = [hermione_granger] ? ;
+Y = '15"_elder_thestral_hair',
+L = [harry_potter,draco_malfoy] ? ;
+no
+
+2. Hermione Granger is influenced by Harry Potter, Cedric Diggory, and Hogwarts.
+findall(X, influence(X, hermione_granger), L).
+L = [harry_potter,cedric_diggory,hogwarts] ? ;
+no
+
+3. No, there are no constants that both influence and belong to another contant.
+?- findall(X, (influence(X, Y), belongs_to(X, Y)), L).
+L = [] ? ;
+no
+
+4. Yes, Draco Malfoy has influence of Slytherin, which he also belongs to.
+
+| ?- bagof(X, (trans_influence(X, Y), belongs_to(X, Y)), L).
+Y = slytherin,
+L = [draco_malfoy] ? ;
+no
+
+?- bagof(Y, trans_influence(X, Y), L).
+X = cedric_diggory,
+L = [harry_potter,hermione_granger] ? ;
+X = draco_malfoy,
+L = [gryffindor,slytherin,hufflepuff,harry_potter,hermione_granger,cedric_diggory,draco_malfoy] ? ;
+X = harry_potter,
+L = [harry_potter] ? ;
+X = hermione_granger,
+L = [hermione_granger] ? ;
+X = hogwarts,
+L = [hermione_granger,harry_potter,hermione_granger,harry_potter,hogwarts] ? ;
+no
+
+5. Yes, Harry Potter, Hermione Granger, Draco Malfoy and Hogwarts has transitional influce over themselves.
+
+?- findall(X, trans_influence(X, X), L).
+L = [harry_potter,hermione_granger,draco_malfoy,hogwarts] ? ;
+no
+
+6. 
+
+?- bagof(Y, (trans_influence(X, Y), \+loyalty(Y, X)), L).
+X = cedric_diggory,
+L = [harry_potter,hermione_granger] ? ;
+X = draco_malfoy,
+L = [gryffindor,slytherin,hufflepuff,harry_potter,hermione_granger,cedric_diggory,draco_malfoy] ? ;
+X = harry_potter,
+L = [harry_potter] ? ;
+X = hermione_granger,
+L = [hermione_granger] ? ;
+X = hogwarts,
+L = [hermione_granger,harry_potter,hermione_granger,harry_potter,hogwarts] ? ;
+no
+
+7. 
+
+?- bagof(Y, (trans_influence(X, Y), loyalty(Y, X)), L).
+no

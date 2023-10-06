@@ -36,7 +36,7 @@ no
 L = [] ? ;
 no
 
-4. Yes, Draco Malfoy has influence of Slytherin, which he also belongs to.
+4. Yes, Draco Malfoy has influence over Slytherin, which he also belongs to.
 
 | ?- bagof(X, (trans_influence(X, Y), belongs_to(X, Y)), L).
 Y = slytherin,

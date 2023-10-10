@@ -54,8 +54,60 @@ trans_influence(X, Y):-
 % Part 2: Define set and handle terms
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Define predicates to handle sets  
+% Define predicates to handle sets
 
+m_member(H,[H|_]).
+m_member(H,[_|T]) :-
+        m_member(H,T).
+
+to_set([], []).
+to_set([H | T], Set) :-
+        to_set(T, Tailset),
+        \+ m_member(H, Tailset),
+        Set = Tailset.
+to_set([H | T], Set) :-
+        to_set(T, Tailset),
+        m_member(H, Tailset),
+        Set = [H | Tailset].
+
+union([], [], []).
+union([H | T], L, Union) :-
+        \+ m_member(H, L),
+        union(T, L, Rest),  
+        Union = [H | Rest].
+union([H | T], L, Union) :-
+        m_member(H, L),
+        union(T, L, Union).
+union([], [H | T], Union) :-
+        union([], T, Rest),
+        Union = [H | Rest].
+
+intersection([], _, []).
+intersection(_,[], []).
+intersection([H | T], L, Inter) :-           
+        m_member(H, L),
+        Inter = [H | Rest],
+        intersection(T, L, Rest), !.   
+intersection([H | T], L, Inter) :-
+        \+ m_member(H, L),
+        intersection(T, L, Inter),!.          
+intersection(L, [H | T], Inter) :-
+        \+ m_member(H, L),
+        intersection(L, T, Inter),!.
+
+diff([], _, []) :- !.
+diff([H | T], L, Diff) :-
+        \+ member(H, L),
+        Diff = [H | Rest],
+        diff(T, L, Rest), !.
+diff([_|T], L, Diff) :-
+        m_member(H, L),
+        diff(T, L, Diff), !.
+
+subset([], _).
+subset([H | T], L) :-
+        m_member(H, L),
+        subset(T, L), !.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Part 3: Monkey and banana

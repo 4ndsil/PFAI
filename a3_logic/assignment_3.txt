@@ -3,6 +3,8 @@ Jesper Blomqvist
 Tarkan Cakici
 ----------------------------------------------------------------------------------------------------------------
 
+Part 1
+
 1.
 Yes, both Harry Potter and Draco Malfoy has 15"_elder_thestral_hair.
 ?- bagof(X, wand(X,Y), L).
@@ -31,7 +33,7 @@ findall(X, influence(X, hermione_granger), L).
 L = [harry_potter,cedric_diggory,hogwarts] ? ;
 no
 
-3. No, there are no constants that both influence and belong to another contant.
+3. No, there are no objects that both influence and belong to another object.
 ?- findall(X, (influence(X, Y), belongs_to(X, Y)), L).
 L = [] ? ;
 no
@@ -64,20 +66,20 @@ no
 
 6. 
 
-?- bagof(Y, (trans_influence(X, Y), \+loyalty(Y, X)), L).
+?- bagof(Y, (trans_influence(X, Y), \+loyalty(Y, X), X \=Y), L).
 X = cedric_diggory,
 L = [harry_potter,hermione_granger] ? ;
 X = draco_malfoy,
-L = [gryffindor,slytherin,hufflepuff,harry_potter,hermione_granger,cedric_diggory,draco_malfoy] ? ;
-X = harry_potter,
-L = [harry_potter] ? ;
-X = hermione_granger,
-L = [hermione_granger] ? ;
+L = [gryffindor,slytherin,hufflepuff,harry_potter,hermione_granger,cedric_diggory] ? ;
 X = hogwarts,
-L = [hermione_granger,harry_potter,hermione_granger,harry_potter,hogwarts] ? ;
-no
+L = [hermione_granger,harry_potter,hermione_granger,harry_potter] ? ;
 
 7. 
 
-?- bagof(Y, (trans_influence(X, Y), loyalty(Y, X)), L).
+?- bagof(Y, (trans_influence(X, Y), loyalty(Y, X), X \=Y), L).
 no
+
+----------------------------------------------------------------------------------------------------------------
+
+Part 2
+

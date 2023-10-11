@@ -5,8 +5,8 @@ Tarkan Cakici
 
 Part 1
 
-1.
-Yes, both Harry Potter and Draco Malfoy has 15"_elder_thestral_hair.
+1.Yes, both Harry Potter and Draco Malfoy has 15"_elder_thestral_hair.
+
 ?- bagof(X, wand(X,Y), L).
 Y = '10"_blackthorn_unknown',
 L = [harry_potter] ? ;
@@ -29,11 +29,13 @@ L = [harry_potter,draco_malfoy] ? ;
 no
 
 2. Hermione Granger is influenced by Harry Potter, Cedric Diggory, and Hogwarts.
+
 findall(X, influence(X, hermione_granger), L).
 L = [harry_potter,cedric_diggory,hogwarts] ? ;
 no
 
 3. No, there are no objects that both influence and belong to another object.
+
 ?- findall(X, (influence(X, Y), belongs_to(X, Y)), L).
 L = [] ? ;
 no
@@ -83,3 +85,52 @@ no
 
 Part 2
 
+
+1. 
+
+?- [X,Y,Z|L] = [a|Zs].
+X = a,
+Zs = [Y,Z|L] ? 
+yes
+
+The head "a" unifies with X as they are the same. The rest of the list "Y,Z|L" is then simply unified with what remains, that is, "Zs".
+
+2. 
+
+?- [a,b] = [X,Y,Z].
+no
+
+This might be because the two list has different lengths, the number of elements needs to be the same for a unification to complete.
+
+3.
+
+?- f(g(X),a,Y) = f(g(b),Y,Z).
+X = b,
+Y = a,
+Z = a ? 
+yes
+
+Executable becuase both sides have the same funtur and arity. Therefor the execution will result in a variable assignment that make both sides equal.
+
+4.
+
+?- p(q(X,Y),r([a,b])) = p(q(a,b),r(X,Y)).
+no
+
+We think this will not work becuase there is a list in the first argument of r, and no list on the secound argument of r. That is, to the left there's
+only one variable and to the right there's two variables. 
+That is, [a,b] = (X,Y) does not unify.
+
+5. 
+
+?- p(s(X),a,Z,Z) = p(Y,X,r(Y),r(s(a))).
+X = a,
+Z = r(s(a)),
+Y = s(a) ? 
+yes
+
+Considering that a fuction may be represented by a variable the unification holds, hence:
+Y=s(X), X=a -> Y=s(a)
+This holds true for Z = r(Y) = r(s(a)).
+
+Also, functor names, p, are identical, and arity (no. of arguments=4) is identical.

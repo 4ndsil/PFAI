@@ -64,12 +64,12 @@ to_set([], []).
 to_set([H | T], Set) :-
         to_set(T, Tailset),
         \+ m_member(H, Tailset),
-        Set = Tailset.
+        Set = [H | Tailset], !.
 to_set([H | T], Set) :-
         to_set(T, Tailset),
         m_member(H, Tailset),
-        Set = [H | Tailset].
-
+        Set = Tailset, !.
+    
 union([], [], []).
 union([H | T], L, Union) :-
         \+ m_member(H, L),
@@ -84,10 +84,10 @@ union([], [H | T], Union) :-
 
 intersection([], _, []).
 intersection(_,[], []).
-intersection([H | T], L, Inter) :-           
+intersection([H | T], L, Inter) :-
         m_member(H, L),
         Inter = [H | Rest],
-        intersection(T, L, Rest), !.   
+        intersection(T, L, Rest), !.
 intersection([H | T], L, Inter) :-
         \+ m_member(H, L),
         intersection(T, L, Inter),!.          
@@ -118,6 +118,14 @@ subset([H | T], L) :-
 % the 3rd is a temporary list of actions creating the plan, initially empty 
 % the 4th the plan that will be produced.
 
+clear_list([], _, []).
+        clear_list([X|State], Delete, Remainder):-
+                m_member(X, Delete),
+                clear_list(State, Delete, Remainder).
+        clear_list([X|State], Delete, [X|Remainder]):-
+                \+ m_member(X, Delete),
+                clear_list(State, Delete, Remainder),
+
 start(Plan):-   
     solve([on(monkey,floor),on(box,floor),at(monkey,a),at(box,b),
            at(bananas,c),at(stick,d),status(bananas,hanging)],
@@ -130,21 +138,11 @@ start(Plan):-
 solve(State, Goal, Sofar, Plan):-
         op(Op, Preconditions, Delete, Add),
 
-        % TODO 1:
-        % Check if an operator can be utilized or not
-        % predicate_name(Preconditions, State)
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Define a predicate that becomes true if:  
-        %       all members of Preconditions are part of current State (State) 
-        % and return false otherwise
-    
-        % TODO 2:
-        % Test to avoid using the operator multiple times 
-        % (To avoid infinite loops, in more comlex problems this is often implemented via states)
-        % predicate_name(Op, Sofar)
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % Define a predicate that checks if Op has been done before
-        % if so the predicate should fail otherwise be true 
+        subset_check(Preconditions, State):-
+                subset(Preconditions, State) .       
+        
+        check_use(Op, Sofar):-
+                \+ m_member(Op, Sofar).
 
         % TODO 3: 
         % First half of applying an operator  
@@ -152,27 +150,27 @@ solve(State, Goal, Sofar, Plan):-
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Define a predicate that removes all members of the Delete list 
         % from the state and the results are returned in the Reminder 
-        
-        append(Add, Remainder, NewState),
+                
+        clear_delete(State, Delete, Remainder):-
+                clear_list(State, Delete, Remainder).
+
+        append(Add, Remainder, NewState).
+              
         % Useful for debugging (de-comment to see output) 
-        % format('Operator:~w ~N', [Op]),    
+        % format('Operator:~w ~N', [Op]),
         % format('NewState:~w ~N', [NewState]),
         solve(NewState, Goal, [Op|Sofar], Plan).
 
 solve(State, Goal, Plan, RPlan):-
         % TODO 4:
-        % add a check if State is a subset of Goal here 
-        reverse(Plan,RPlan).
+        % add a check if State is a subset of Goal here
+        subset(State, Goal), 
+        r_reverse(Plan,RPlan).
 
-% TODO 5: 
-% reverse(Plan,RPlan) - define this predicate which returns a reversed list
-
-        
-% The operators take 4 arguments
-% 1st arg = name
-% 2nd arg = preconditions
-% 3rd arg = delete list
-% 4th arg = add list.
+r_reverse([], []).
+r_reverse([H | T], RList):-
+        RList = [H | RList],
+        r_reverse(T, RList).
 
 op(swing(stick),
     [on(monkey,box), at(monkey,X), at(box,X), holding(monkey,stick), at(bananas,X), status(bananas,hanging)],
@@ -183,12 +181,17 @@ op(grab(stick),
         [at(monkey,X), at(stick, X), on(monkey,floor)],
         [at(stick, X)],
         [holding(monkey,stick)]).
+               
+op(climbon(box), 
+        [at(monkey, X), on(monkey,floor),at(box, X)],
+        [on(monkey, floor)],
+        [on(monkey, box)]).
 
-% TODO 6: 
-% op(climbon(box) - define this operator
-       
-% TODO 7:
-% op(push(box,X,Y) - define this operator
+op(push(box,X,Y),
+        [at(box,X), on(box,floor)],
+        [at(box,X)],
+        [at(box,Y)]):- 
+        X \== Y.
 
 op(go(X,Y),
         [at(monkey,X), on(monkey,floor)],

@@ -3,7 +3,7 @@ Jesper Blomqvist
 Tarkan Cakici
 ----------------------------------------------------------------------------------------------------------------
 
-Part 1
+Part 1 - Harry Potter
 
 1.Yes, both Harry Potter and Draco Malfoy has 15"_elder_thestral_hair.
 
@@ -83,7 +83,7 @@ no
 
 ----------------------------------------------------------------------------------------------------------------
 
-Part 2
+Part 2 - Sets, Unification and Terms
 
 
 1. 
@@ -134,3 +134,13 @@ Y=s(X), X=a -> Y=s(a)
 This holds true for Z = r(Y) = r(s(a)).
 
 Also, functor names, p, are identical, and arity (no. of arguments=4) is identical.
+
+----------------------------------------------------------------------------------------------------------------
+
+Part 3 - Monkey and banana problem
+
+?- start(Plan).
+Plan = [go(a,d),grab(stick),go(d,b),push(box,b,c),go(b,c),climbon(box),swing(stick)] ? ;
+Plan = [go(a,b),push(box,b,d),go(b,d),grab(stick),push(box,d,c),go(d,c),climbon(box),swing(stick)] ? ;
+Plan = [go(a,b),push(box,b,c),go(b,d),grab(stick),go(d,c),climbon(box),swing(stick)] ? ;
+no

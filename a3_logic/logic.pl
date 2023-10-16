@@ -47,7 +47,9 @@ influence(hogwarts, hermione_granger).
 influence(hogwarts, cedric_diggory).
 influence(hogwarts, draco_malfoy).
 
-% trans_influence(X, Y) X influences Y through some other object Z
+trans_influence(X, Y):-
+        influence(X, Z),
+        influence(Z, Y).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Part 2: Define set and handle terms

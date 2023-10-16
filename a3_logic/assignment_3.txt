@@ -5,6 +5,7 @@ Tarkan Cakici
 
 Part 1 - Harry Potter
 
+
 1.Yes, both Harry Potter and Draco Malfoy has 15"_elder_thestral_hair.
 
 ?- bagof(X, wand(X,Y), L).
@@ -66,7 +67,7 @@ no
 L = [harry_potter,hermione_granger,draco_malfoy,hogwarts] ? ;
 no
 
-6. 
+6. Yes, for instance, Cedric Diggory influences Harry Potter, Hermione Granger, however they are not loyal to Cedric Diggory.
 
 ?- bagof(Y, (trans_influence(X, Y), \+loyalty(Y, X), X \=Y), L).
 X = cedric_diggory,
@@ -76,7 +77,7 @@ L = [gryffindor,slytherin,hufflepuff,harry_potter,hermione_granger,cedric_diggor
 X = hogwarts,
 L = [hermione_granger,harry_potter,hermione_granger,harry_potter] ? ;
 
-7. 
+7. No, there existis no object that has transitaional object over another where the latter is loyal to the former.
 
 ?- bagof(Y, (trans_influence(X, Y), loyalty(Y, X), X \=Y), L).
 no
@@ -138,6 +139,7 @@ Also, functor names, p, are identical, and arity (no. of arguments=4) is identic
 ----------------------------------------------------------------------------------------------------------------
 
 Part 3 - Monkey and banana problem
+
 
 ?- start(Plan).
 Plan = [go(a,d),grab(stick),go(d,b),push(box,b,c),go(b,c),climbon(box),swing(stick)] ? ;

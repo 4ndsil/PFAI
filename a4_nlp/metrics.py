@@ -4,7 +4,8 @@ metrics.py
 Author Korbinian Randl
 '''
 
-def get_false_positives(y_true:list, y_pred:list) -> int:
+
+def get_false_positives(y_true: list, y_pred: list) -> int:
     '''Returns the number of false positives.
 
     inputs:
@@ -15,10 +16,18 @@ def get_false_positives(y_true:list, y_pred:list) -> int:
 
     returns:         number of false positives.
     '''
-    #TODO change this:
-    return 0
+    # TODO change this:
 
-def get_true_positives(y_true:list, y_pred:list) -> int:
+    fp = 0
+
+    for i in len(y_true):
+        if y_true[i] == False and y_pred[i] == True:
+            fp += 1
+
+    return fp
+
+
+def get_true_positives(y_true: list, y_pred: list) -> int:
     '''Returns the number of true positives.
 
     inputs:
@@ -29,10 +38,18 @@ def get_true_positives(y_true:list, y_pred:list) -> int:
 
     returns:         number of true positives.
     '''
-    #TODO change this:
-    return 0
+    # TODO change this:
 
-def get_false_negatives(y_true:list, y_pred:list) -> int:
+    tp = 0
+
+    for i in len(y_true):
+        if y_true[i] == True and y_pred[i] == True:
+            tp += 1
+
+    return tp
+
+
+def get_false_negatives(y_true: list, y_pred: list) -> int:
     '''Returns the number of false negatives.
 
     inputs:
@@ -43,10 +60,18 @@ def get_false_negatives(y_true:list, y_pred:list) -> int:
 
     returns:         number of false negatives.
     '''
-    #TODO change this:
-    return 0
+    # TODO change this:
 
-def get_true_negatives(y_true:list, y_pred:list) -> int:
+    fn = 0
+
+    for i in len(y_true):
+        if y_true[i] == True and y_pred[i] == False:
+            fn += 1
+
+    return fn
+
+
+def get_true_negatives(y_true: list, y_pred: list) -> int:
     '''Returns the number of true negatives.
 
     inputs:
@@ -57,10 +82,18 @@ def get_true_negatives(y_true:list, y_pred:list) -> int:
 
     returns:         number of true negatives.
     '''
-    #TODO change this:
-    return 0
+    # TODO change this:
 
-def get_accuracy(y_true:list, y_pred:list) -> float:
+    tn = 0
+
+    for i in len(y_true):
+        if y_true[i] == False and y_pred[i] == False:
+            tn += 1
+
+    return tn
+
+
+def get_accuracy(y_true: list, y_pred: list) -> float:
     '''Returns the accuracy of the predictions.
 
     inputs:
@@ -71,10 +104,15 @@ def get_accuracy(y_true:list, y_pred:list) -> float:
 
     returns:         accuracy of the predictions.
     '''
-    #TODO change this (hint: use the above functions):
-    return 0.
+    # TODO change this (hint: use the above functions):
 
-def get_f1(y_true:list, y_pred:list) -> float:
+    tp = get_true_positives(y_true, y_pred)
+    tn = get_true_negatives(y_true, y_pred)
+
+    return (tp + tn) / len(y_true)
+
+
+def get_f1(y_true: list, y_pred: list) -> float:
     '''Returns the f1 score for the predictions.
 
     inputs:
@@ -85,10 +123,18 @@ def get_f1(y_true:list, y_pred:list) -> float:
 
     returns:         f1-score of the predictions.
     '''
-    #TODO change this (hint: use the above functions):
-    return 0.
+    # TODO change this (hint: use the above functions):
 
-def pretty_print(y_true:list, y_pred:list) -> None:
+    tp = get_true_positives(y_true, y_pred)
+    fp = get_false_positives(y_true, y_pred)
+    fn = get_false_negatives(y_true, y_pred)
+    precision = tp / (tp + fp)
+    recall = tp / (tp + fn)
+
+    return 2 * (precision * recall) / (precision + recall)
+
+
+def pretty_print(y_true: list, y_pred: list) -> None:
     '''Prints a confusion matrix in ascii art.
 
     inputs:
@@ -101,9 +147,9 @@ def pretty_print(y_true:list, y_pred:list) -> None:
     tp = f'{get_true_positives(y_true, y_pred):4d}'
     tn = f'{get_true_negatives(y_true, y_pred):4d}'
 
-    print( '      |    true    |')
-    print( ' pred | TRUE FALSE |')
-    print( '------|------------|')
+    print('      |    true    |')
+    print(' pred | TRUE FALSE |')
+    print('------|------------|')
     print(f' TRUE | {tp}  {fp} |')
     print(f'FALSE | {fn}  {tn} |\n')
 

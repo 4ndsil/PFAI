@@ -4,9 +4,11 @@ decision_tree.py
 Author Korbinian Randl
 '''
 import random
+import math
+
 
 class BinaryDecisionTree:
-    def __init__(self, X:dict, y:list, bias:float=.5, max_depth:int=float('inf')) -> None:
+    def __init__(self, X: dict, y: list, bias: float = .5, max_depth: int = float('inf')) -> None:
         '''Creates and trains a decision tree.
 
         inputs:
@@ -28,12 +30,15 @@ class BinaryDecisionTree:
             if (len(data['X']) == 0) or (len(set(data['y'])) == 1) or (max_depth <= 1):
                 # always predict average value:
                 n = len(data['y'])
-                if n == 0: self.children.append(False)
-                else:      self.children.append((sum(data['y']) / n) > bias)
-                
+                if n == 0:
+                    self.children.append(False)
+                else:
+                    self.children.append((sum(data['y']) / n) > bias)
+
             else:
                 # otherwise train subtree:
-                subtree = BinaryDecisionTree(data['X'], data['y'], bias=bias, max_depth=max_depth-1)
+                subtree = BinaryDecisionTree(
+                    data['X'], data['y'], bias=bias, max_depth=max_depth-1)
 
                 # check if subtree actually decides something:
                 all_true = True
@@ -44,14 +49,17 @@ class BinaryDecisionTree:
                         all_false = False
                         break
 
-                    all_true  &= (child == True)
+                    all_true &= (child == True)
                     all_false &= (child == False)
 
-                if all_true:    self.children.append(True)
-                elif all_false: self.children.append(False)
-                else:           self.children.append(subtree)
+                if all_true:
+                    self.children.append(True)
+                elif all_false:
+                    self.children.append(False)
+                else:
+                    self.children.append(subtree)
 
-    def fit(self, X:dict, y:list) -> None:
+    def fit(self, X: dict, y: list) -> None:
         '''Calculates the best split and best attribute.
 
         inputs:
@@ -60,9 +68,9 @@ class BinaryDecisionTree:
             y:          list[bool] of labels.
         '''
         best_info_gain = -1.
-        best_threshold =  0.
+        best_threshold = 0.
         best_attribute = random.choice(list(X.keys()))
-        
+
         # for every attribute in the data:
         for attribute in X:
             x = X[attribute]
@@ -70,12 +78,15 @@ class BinaryDecisionTree:
             # for every unique value of that attribute:
             for threshold in set(x):
                 # split data:
-                i_left  = [index for index, value in enumerate(x) if value <= threshold]
-                i_right = [index for index, value in enumerate(x) if value > threshold]
+                i_left = [index for index, value in enumerate(
+                    x) if value <= threshold]
+                i_right = [index for index, value in enumerate(
+                    x) if value > threshold]
 
                 if len(i_left) > 0 and len(i_right) > 0:
                     # caclulate the information gain:
-                    info_gain = self.get_information_gain(y, ([y[i] for i in i_left], [y[i] for i in i_right]))
+                    info_gain = self.get_information_gain(
+                        y, ([y[i] for i in i_left], [y[i] for i in i_right]))
 
                     # if the current split is better then the previous best:
                     if info_gain > best_info_gain:
@@ -86,8 +97,8 @@ class BinaryDecisionTree:
         # save parameters:
         self.threshold = best_threshold
         self.attribute = best_attribute
-    
-    def split(self, X:dict, y:list=None) -> tuple:
+
+    def split(self, X: dict, y: list = None) -> tuple:
         '''Splits the dataset at the threshold:
 
         inputs:
@@ -100,30 +111,32 @@ class BinaryDecisionTree:
         '''
         # split data:
         left_split = {
-            'indices':[index for index, value in enumerate(X[self.attribute]) if value <= self.threshold]
+            'indices': [index for index, value in enumerate(X[self.attribute]) if value <= self.threshold]
         }
         right_split = {
-            'indices':[index for index, value in enumerate(X[self.attribute]) if value > self.threshold]
+            'indices': [index for index, value in enumerate(X[self.attribute]) if value > self.threshold]
         }
 
         # split dataset:
-        left_split['X']  = {key:[X[key][i] for i in left_split['indices']] for key in X if key != self.attribute}
-        right_split['X'] = {key:[X[key][i] for i in right_split['indices']] for key in X if key != self.attribute}
+        left_split['X'] = {key: [X[key][i] for i in left_split['indices']]
+                           for key in X if key != self.attribute}
+        right_split['X'] = {key: [X[key][i] for i in right_split['indices']]
+                            for key in X if key != self.attribute}
 
         # split labels:
         if y is not None:
-            left_split['y']  = [y[i] for i in left_split['indices']]
+            left_split['y'] = [y[i] for i in left_split['indices']]
             right_split['y'] = [y[i] for i in right_split['indices']]
 
         return left_split, right_split
 
-    def predict(self, X:dict) -> list:
+    def predict(self, X: dict) -> list:
         '''Predict the class of the input.
 
         inputs:
             X:      dictionary str->list[float] of attributes and their values.
 
-        
+
         returns:    predicted boolean classes.
         '''
         predictions = [False]*len(X[self.attribute])
@@ -142,8 +155,8 @@ class BinaryDecisionTree:
                     predictions[i] = child
 
         return predictions
-    
-    def pretty_print(self, indent:int=0) -> None:
+
+    def pretty_print(self, indent: int = 0) -> None:
         '''Prints the decision tree to console.
         '''
         options = [
@@ -151,14 +164,15 @@ class BinaryDecisionTree:
             '  '*indent + f'{self.attribute.upper()} > {self.threshold:.2f}:'
         ]
 
-        for i,s in enumerate(options):
+        for i, s in enumerate(options):
             if isinstance(self.children[i], BinaryDecisionTree):
                 print(s)
                 self.children[i].pretty_print(indent+1)
 
-            else: print(s, self.children[i])
-    
-    def get_information_gain(self, y_all:list, y_split:tuple) -> float:
+            else:
+                print(s, self.children[i])
+
+    def get_information_gain(self, y_all: list, y_split: tuple) -> float:
         '''Calculates the decision threshold and the label assigned to values greater than this threshold.
 
         inputs:
@@ -169,5 +183,35 @@ class BinaryDecisionTree:
 
         returns:        information gain of the split.
         '''
-        #TODO: implement this method
-        return 0.
+        # TODO: implement this method
+
+        def entropy(y):
+
+            total_values = len(y)
+
+            if total_values <= 1:
+                return 0
+
+            unique_labels = []
+
+            for label in y:
+                if y not in unique_labels:
+                    unique_labels.append(y)
+
+            entropy = 0
+            for label in unique_labels:
+                prob = unique_labels[label] / total_values
+                entropy = entropy - (prob * math.log2(prob))
+
+            return entropy
+
+        total_y = len(y_all)
+        entropy_all = entropy(y_all)
+
+        entropy_split = 0
+
+        for split in y_split:
+            split_weight = len(split) / total_y
+            entropy_split = entropy_split + (split_weight * entropy(split))
+
+        return entropy_all - entropy_split

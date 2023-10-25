@@ -51,15 +51,21 @@ class BinaryRandomForest:
         '''
         # TODO change this
 
-        selected_sample_size = int(0.7 * len(X))
+        sample_size = len(next(iter(X.values())))
 
-        selected_sample = random.sample(X, selected_sample_size)
+        sampled_indices = []
 
-        bootstrap_sample_X = {}
-        bootstrap_sample_y = []
+        for _ in range(sample_size):
+            sampled_indices.append(random.choice(range(sample_size)))
 
-        for attr, idx in selected_sample:
-            bootstrap_sample_X[attr].append(selected_sample[attr][idx])
-            bootstrap_sample_y = y[idx]
+        bootstrapped_X = {}
+        bootstrapped_y = []
 
-        return bootstrap_sample_X, bootstrap_sample_y
+        for attr in X:
+            for i in sampled_indices:
+                bootstrapped_X[attr] = [X[attr][i]]
+
+        for i in sampled_indices:
+            bootstrapped_y.append(y[i])
+
+        return bootstrapped_X, bootstrapped_y

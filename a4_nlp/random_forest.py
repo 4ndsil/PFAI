@@ -62,8 +62,9 @@ class BinaryRandomForest:
         bootstrapped_y = []
 
         for attr in X:
+            bootstrapped_X[attr] = []
             for i in sampled_indices:
-                bootstrapped_X[attr] = [X[attr][i]]
+                bootstrapped_X[attr].append(X[attr][i])
 
         for i in sampled_indices:
             bootstrapped_y.append(y[i])

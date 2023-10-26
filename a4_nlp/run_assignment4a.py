@@ -64,13 +64,17 @@ with open('wines.json', 'r') as file:
     X = json.load(file)
 y = X.pop('class')
 
-threshold = int(len(y) * 0.85)
+ratio = int(len(y) * 0.75)
 
-X_train = {key: X[key][0:threshold] for key in X.keys()}
-y_train = y[0:threshold]
+X_train = {}
+X_test = {}
+for key in X.keys():
+    X_train[key] = X[key][0:ratio]
+    X_test[key] = X[key][ratio:]
 
-X_test = {key: X[key][threshold:] for key in X.keys()}
-y_test = y[threshold:]
+y_train = y[0:ratio]
+y_test = y[ratio:]
+
 
 ####################################################################################################
 # Main Function:                                                                                   #

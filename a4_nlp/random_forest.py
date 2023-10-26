@@ -51,12 +51,10 @@ class BinaryRandomForest:
         '''
         # TODO change this
 
-        sample_size = len(next(iter(X.values())))
+        sample_size = int(0.35*len(y))  # sample size of 35%
 
-        sampled_indices = []
-
-        for _ in range(sample_size):
-            sampled_indices.append(random.choice(range(sample_size)))
+        sampled_indices = random.choices(
+            range(len(y)), k=sample_size)
 
         bootstrapped_X = {}
         bootstrapped_y = []

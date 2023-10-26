@@ -2,3 +2,10 @@ Andreas Siljefors
 Jesper Blomqvist
 Tarkan Cakici
 ----------------------------------------------------------------------------------------------------------------
+
+4. There is something odd going on with the predictions, with the classifier predicting almost exclusively positive (true labels) outcomes.
+Either the training data is skewed or the classifer is.
+
+
+The decsion tree model seems to perfrom better than the random forest which for us seems starnge since the 
+latter is a ensemble learning model. Decsion tree is a weak learner. Also run_assignment4a lacks split of data into train and test set.

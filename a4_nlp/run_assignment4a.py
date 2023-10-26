@@ -13,7 +13,8 @@ import json
 # Functions:                                                                                       #
 ####################################################################################################
 
-def print_data(X:dict, y:list, n:int=10, column_width:int=9) -> None:
+
+def print_data(X: dict, y: list, n: int = 10, column_width: int = 9) -> None:
     '''Prints a sample of the data.
 
     inputs:
@@ -27,8 +28,8 @@ def print_data(X:dict, y:list, n:int=10, column_width:int=9) -> None:
     '''
     # get feature names:
     rows = [[' '*column_width]*len(X) for _ in range(3)]
-    for j,column in enumerate(X):
-        for i,s in enumerate(column.split()):
+    for j, column in enumerate(X):
+        for i, s in enumerate(column.split()):
             rows[i][j] = s + ' '*(column_width-len(s))
 
     # add label:
@@ -58,12 +59,18 @@ def print_data(X:dict, y:list, n:int=10, column_width:int=9) -> None:
 # Load Data:                                                                                       #
 ####################################################################################################
 
-with open('wines.json', 'r') as file:
-    X_train = json.load(file)
-y_train = X_train.pop('class')
 
-X_test  = X_train
-y_test  = y_train
+with open('wines.json', 'r') as file:
+    X = json.load(file)
+y = X.pop('class')
+
+threshold = int(len(y) * 0.85)
+
+X_train = {key: X[key][0:threshold] for key in X.keys()}
+y_train = y[0:threshold]
+
+X_test = {key: X[key][threshold:] for key in X.keys()}
+y_test = y[threshold:]
 
 ####################################################################################################
 # Main Function:                                                                                   #
@@ -75,7 +82,6 @@ if __name__ == '__main__':
     print('[Published under CC BY 4.0]')
     print_data(X_train, y_train)
 
-
     # train a decision tree classifier and predict the test set:
     print('Training Decision Tree ...')
     tree = BinaryDecisionTree(X_train, y_train, bias=.5, max_depth=5)
@@ -86,15 +92,15 @@ if __name__ == '__main__':
     print('Final Decision Tree:')
     tree.pretty_print()
     print()
-    
+
     # print confusion matrix:
     print('Performance Decision Tree:')
     metrics.pretty_print(y_test, predictions_tree)
 
-
     # train a random forrest classifier and predict the test set:
     print('\nTraining Random Forest ...')
-    forest = BinaryRandomForest(X_train, y_train, n_trees=20, bias=.5, max_depth=5)
+    forest = BinaryRandomForest(
+        X_train, y_train, n_trees=20, bias=.5, max_depth=5)
     predictions_forest = forest.predict(X_test)
     print('Done.\n')
 

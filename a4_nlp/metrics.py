@@ -20,7 +20,7 @@ def get_false_positives(y_true: list, y_pred: list) -> int:
 
     fp = 0
 
-    for i in len(y_true):
+    for i in range(len(y_true)):
         if y_true[i] == False and y_pred[i] == True:
             fp += 1
 
@@ -42,7 +42,7 @@ def get_true_positives(y_true: list, y_pred: list) -> int:
 
     tp = 0
 
-    for i in len(y_true):
+    for i in range(len(y_true)):
         if y_true[i] == True and y_pred[i] == True:
             tp += 1
 
@@ -64,7 +64,7 @@ def get_false_negatives(y_true: list, y_pred: list) -> int:
 
     fn = 0
 
-    for i in len(y_true):
+    for i in range(len(y_true)):
         if y_true[i] == True and y_pred[i] == False:
             fn += 1
 
@@ -86,7 +86,7 @@ def get_true_negatives(y_true: list, y_pred: list) -> int:
 
     tn = 0
 
-    for i in len(y_true):
+    for i in range(len(y_true)):
         if y_true[i] == False and y_pred[i] == False:
             tn += 1
 

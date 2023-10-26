@@ -192,11 +192,13 @@ class BinaryDecisionTree:
             if total_values <= 1:
                 return 0
 
-            unique_labels = []
+            unique_labels = {}
 
             for label in y:
-                if y not in unique_labels:
-                    unique_labels.append(y)
+                if label not in unique_labels:
+                    unique_labels[label] = 1
+                else:
+                    unique_labels[label] += 1
 
             entropy = 0
             for label in unique_labels:

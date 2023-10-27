@@ -36,7 +36,16 @@ class BinaryRandomForest:
         '''
         predictions = [tree.predict(X) for tree in self.trees]
 
-        return random.choice(predictions)
+        majority_pred = None
+        majority_count = 0
+        curr_count = 0
+        for pred in predictions:
+            curr_count = predictions.count(pred)
+            if curr_count > majority_count:
+                majority_count = curr_count
+                majority_pred = pred
+
+        return majority_pred
 
     def get_sample(self, X: dict, y: list) -> dict:
         '''Implements feature bagging for X.

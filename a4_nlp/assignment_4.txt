@@ -5,7 +5,138 @@ Tarkan Cakici
 
 4. There is something odd going on with the predictions, with the classifier predicting almost exclusively positive (true labels) outcomes.
 Either the training data is skewed or the classifer is.
+The following changes were made:
+- test_train_split in run_assignment4a.py
+- information gain method, entropy
+- majority voting for the random forest model
 
-
-The decsion tree model seems to perfrom better than the random forest which for us seems starnge since the 
+The decsion tree model seems to perfrom better than the random forest which for us seems strange since the 
 latter is a ensemble learning model. Decsion tree is a weak learner. Also run_assignment4a lacks split of data into train and test set.
+
+We modified the code by implementing a split of the data into a traning and testing set. We also modified the random forest predict method by adding
+majority vote to decide the final prediction. 
+----------------------------------------------------------------------------------------------------------------
+
+5. From our results we could not clearly see differences between the models upon altering bias and depth. Increasing the bias decerased the pefromance 
+of both models, however altering the depth did not result in any notable changes. We discussed the results and thought that it was odd and not what we expected. 
+Our common understanding was that the random forest is a stronger model and that it would be less affected by changes of bias and depth as it utilized majority vote
+for the final predictions. 
+
+
+bias=.5, max_depth=5
+
+Performance Decision Tree:
+      |    true    |
+ pred | TRUE FALSE |
+------|------------|
+ TRUE |  605   110 |
+FALSE |  215   295 |
+
+Accuracy: 0.7347
+F1-score: 0.7883
+
+Training Random Forest ...
+Done.
+
+Performance Random Forest:
+      |    true    |
+ pred | TRUE FALSE |
+------|------------|
+ TRUE |  676   228 |
+FALSE |  144   177 |
+
+Accuracy: 0.6963
+F1-score: 0.7842
+----------------------------------------------------------------------------------------------------------------
+bias=.2, max_depth=8
+
+Performance Decision Tree:
+      |    true    |
+ pred | TRUE FALSE |
+------|------------|
+ TRUE |  800   358 |
+FALSE |   20    47 |
+
+Accuracy: 0.6914
+F1-score: 0.8089
+
+Performance Random Forest:
+      |    true    |
+ pred | TRUE FALSE |
+------|------------|
+ TRUE |  715   286 |
+FALSE |  105   119 |
+
+Accuracy: 0.6808
+F1-score: 0.7853
+----------------------------------------------------------------------------------------------------------------
+bias=.5, max_depth=8
+
+Performance Decision Tree:
+      |    true    |
+ pred | TRUE FALSE |
+------|------------|
+ TRUE |  676   158 |
+FALSE |  144   247 |
+
+Accuracy: 0.7535
+F1-score: 0.8174
+
+Performance Random Forest:
+      |    true    |
+ pred | TRUE FALSE |
+------|------------|
+ TRUE |  618   163 |
+FALSE |  202   242 |
+
+Accuracy: 0.7020
+F1-score: 0.7720
+----------------------------------------------------------------------------------------------------------------
+bias=.9, max_depth=5
+
+Performance Decision Tree:
+      |    true    |
+ pred | TRUE FALSE |
+------|------------|
+ TRUE |  237    23 |
+FALSE |  583   382 |
+
+Accuracy: 0.5053
+F1-score: 0.4389
+
+Performance Random Forest:
+      |    true    |
+ pred | TRUE FALSE |
+------|------------|
+ TRUE |  326    48 |
+FALSE |  494   357 |
+
+Accuracy: 0.5576
+F1-score: 0.5461
+----------------------------------------------------------------------------------------------------------------
+bias=.5, max_depth=2
+
+Performance Decision Tree:
+      |    true    |
+ pred | TRUE FALSE |
+------|------------|
+ TRUE |  594   123 |
+FALSE |  226   282 |
+
+Accuracy: 0.7151
+F1-score: 0.7729
+
+Performance Random Forest:
+      |    true    |
+ pred | TRUE FALSE |
+------|------------|
+ TRUE |  649   154 |
+FALSE |  171   251 |
+
+Accuracy: 0.7347
+F1-score: 0.7998
+----------------------------------------------------------------------------------------------------------------
+
+6. We decided to use tokenization and lemmatizing to preprocesses the text, that to transform words to thier basic form. Upon doing this we saw that the number of tokens 
+decreased and the model traning speed might also have increased slightly. However, the overall perfromance of the model seemed to be worse than before the preprocessing. 
+We discussed that this might have to do with loss of context following the preprocess. 

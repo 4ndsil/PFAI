@@ -63,18 +63,22 @@ def print_data(X: dict, y: list, n: int = 10, column_width: int = 9) -> None:
 with open('wines.json', 'r') as file:
     X = json.load(file)
 y = X.pop('class')
-
 ratio = int(len(y) * 0.75)
 
-X_train = {}
-X_test = {}
-for key in X.keys():
-    X_train[key] = X[key][0:ratio]
-    X_test[key] = X[key][ratio:]
 
-y_train = y[0:ratio]
-y_test = y[ratio:]
+def test_train_split(X, y):
+    X_train = {}
+    X_test = {}
+    for attr in X:
+        X_train[attr] = X[attr][:ratio]
+        X_test[attr] = X[attr][ratio:]
 
+    y_train = y[:ratio]
+    y_test = y[ratio:]
+    return (X_test, y_test, X_train, y_train)
+
+
+X_test, y_test, X_train, y_train = test_train_split(X, y)
 
 ####################################################################################################
 # Main Function:                                                                                   #
@@ -88,7 +92,7 @@ if __name__ == '__main__':
 
     # train a decision tree classifier and predict the test set:
     print('Training Decision Tree ...')
-    tree = BinaryDecisionTree(X_train, y_train, bias=.5, max_depth=5)
+    tree = BinaryDecisionTree(X_train, y_train, bias=.5, max_depth=2)
     predictions_tree = tree.predict(X_test)
     print('Done.\n')
 
@@ -104,7 +108,7 @@ if __name__ == '__main__':
     # train a random forrest classifier and predict the test set:
     print('\nTraining Random Forest ...')
     forest = BinaryRandomForest(
-        X_train, y_train, n_trees=20, bias=.5, max_depth=5)
+        X_train, y_train, n_trees=20, bias=.5, max_depth=2)
     predictions_forest = forest.predict(X_test)
     print('Done.\n')
 
